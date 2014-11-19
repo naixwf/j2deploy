@@ -1,0 +1,46 @@
+#!/bin/bash
+# put a jar to the place
+if [ $J2DEPLOY_HOME ]; then
+  source $J2DEPLOY_HOME/j2deploy.conf
+else
+  echo "please set J2DEPLOY_HOME "
+  exit 1
+fi
+
+if [ $# -lt 2 ]
+then
+  echo "usage: $0 appid xxxxx.jar"
+  exit 1
+fi
+
+set -e
+
+APP_ID=$1
+SRC_FILE=$2
+
+APP_HOME=$APP_BASE/$APP_ID
+# dir store wars
+APP_WAR_HOME=$APP_HOME/wars
+if [ ! -d $APP_WAR_HOME ]; then
+  CMD="mkdir -p $APP_WAR_HOME"
+  echo "executing $CMD"
+  $CMD
+fi
+# running war extract to this dir
+APP_WORK_HOME=$APP_HOME/work
+
+# assemble target file path
+TIMESTAMP=`date +%Y%m%d%H%M`
+TARGET_FILE="${APP_WAR_HOME}/${APP_ID}-${TIMESTAMP}.jar"
+
+CMD="cp $SRC_FILE $TARGET_FILE"
+echo "executing [ $CMD ]"
+$CMD
+
+CMD="cp -f $TARGET_FILE $APP_HOME/$APP_ID.jar"
+echo "executing [ $CMD ]"
+$CMD
+
+# jput log
+TIME=`date "+%Y-%m-%d %H:%M:%S"`
+echo "[$TIME]: deploy [ $TARGET_FILE ] to this dir" >> $APP_HOME/info

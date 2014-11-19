@@ -1,0 +1,33 @@
+#!/bin/bash
+if [ $J2DEPLOY_HOME ]; then
+  source $J2DEPLOY_HOME/j2deploy.conf
+else
+  echo "please set J2DEPLOY_HOME "
+  exit 1
+fi
+
+if [ $# -lt 2 ]
+then
+  echo "usage: $0 appid suffix"
+  exit 1
+fi
+
+set -e
+
+APP_ID=$1
+SUFFIX=$2
+
+APP_HOME=$APP_BASE/$APP_ID
+# dir store wars
+APP_WAR_HOME=$APP_HOME/wars
+
+SRC_FILE="${APP_WAR_HOME}/${APP_ID}-${SUFFIX}.jar"
+TAEGET_FILE="${APP_HOME}/${APP_ID}.jar"
+
+CMD="cp $SRC_FILE $TAEGET_FILE"
+echo "executing [ $CMD ] "
+$CMD
+
+# rollback log
+TIME=`date "+%Y-%m-%d %H:%M:%S"`
+echo "[$TIME]: rollback [ $TARGET_FILE ] to this dir" >> $APP_HOME/info
