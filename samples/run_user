@@ -1,0 +1,4 @@
+#!/bin/bash
+export HTTP_PORT=9090
+export JDBC_URL="jdbc:mysql://dev:3307/S61?useUnicode=true&characterEncoding=utf-8&noAccessToProcedureBodies=true"
+exec jstart user

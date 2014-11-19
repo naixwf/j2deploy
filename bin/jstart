@@ -1,0 +1,94 @@
+#!/bin/bash
+if [ $J2DEPLOY_HOME ]; then
+  source $J2DEPLOY_HOME/j2deploy.conf
+else
+  echo "please set J2DEPLOY_HOME "
+  exit 1
+fi
+
+if [ $# -lt 1 ]
+then
+  echo "usage: $0 appid" 
+  exit 1
+fi
+
+set -e
+
+APP_ID=$1
+
+export LANG=en_US.UTF-8
+export LC_CTYPE="en_US.UTF-8"
+export LC_NUMERIC="en_US.UTF-8"
+export LC_TIME="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+export LC_MONETARY="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_PAPER="en_US.UTF-8"
+export LC_NAME="en_US.UTF-8"
+export LC_ADDRESS="en_US.UTF-8"
+export LC_TELEPHONE="en_US.UTF-8"
+export LC_MEASUREMENT="en_US.UTF-8"
+export LC_IDENTIFICATION="en_US.UTF-8"
+export LC_ALL=
+
+# TODO APP_USER 提取出来
+APP_USER="admin"
+SET_GUID="/usr/local/bin/setuidgid ${APP_USER}"
+APP_HOME=$APP_BASE/$APP_ID
+
+# dir store wars
+APP_WAR_HOME=$APP_HOME/wars
+# running war extract to this dir
+APP_WORK_HOME=$APP_HOME/work
+
+# -----------------------------------------------------------------------------
+# check app work dir
+if [ ! -d $APP_HOME ]
+then
+  echo "[$APP_HOME] does not exist, deploy the app first"
+  exit 1
+fi
+
+# assemble java command
+JAVA_CMD=""
+if [ "$UID" = "0" ]; then
+  JAVA_CMD=$JAVA_CMD" $SET_GUID"
+fi
+
+# the jar contains war
+JAVA_CMD=$JAVA_CMD" $JAVA_HOME/bin/java -jar $APP_HOME/$APP_ID.jar -Dapp.id=$APP_ID -Dfile.encoding=UTF-8"
+# environment
+JAVA_CMD=$JAVA_CMD" -Denvironment=$EVIRONMENT" 
+# jdbc.url for test TODO remove it
+if [ $JDBC_URL ]; then
+  JAVA_CMD=$JAVA_CMD" -Djdbc.url=$JDBC_URL"
+fi
+
+# log path
+JAVA_CMD=$JAVA_CMD" -DlogPath=$APP_LOG_PATH" 
+
+# -Drsakey.path=/opt/website/javaapps/rsaprivatekey.pem -Drsakey.password=123456
+# for production,rsakey & path
+if [ $RSAKEY_PATH ]; then
+  JAVA_CMD=$JAVA_CMD" -Drsakey.path=$RSAKEY_PATH"
+fi
+if [ $RSAKEY_PASSWORD ]; then
+  JAVA_CMD=$JAVA_CMD" -Drsakey.password=$RSAKEY_PASSWORD"
+fi
+
+# via http://tomcat.apache.org/maven-plugin-2.2/executable-war-jar.html
+# app.port
+if [ ! $HTTP_PORT ]; then
+  echo "please set HTTP_PORT"
+  exit 1
+fi
+JAVA_CMD=$JAVA_CMD" --httpPort=$HTTP_PORT"
+
+# extract to path
+JAVA_CMD=$JAVA_CMD" -extractDirectory=$APP_WORK_HOME"
+
+# logger use slf4j
+JAVA_CMD=$JAVA_CMD" -loggerName=slf4j"
+
+echo $JAVA_CMD
+exec $JAVA_CMD 2>&1
