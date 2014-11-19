@@ -68,7 +68,6 @@ JAVA_CMD=$JAVA_CMD" -Denvironment=$EVIRONMENT"
 # log path
 JAVA_CMD=$JAVA_CMD" -DlogPath=$APP_LOG_PATH" 
 
-# -Drsakey.path=/opt/website/javaapps/rsaprivatekey.pem -Drsakey.password=123456
 # for production,rsakey & path. only PRODUCTION need it to decrypt jdbc.password
 if [ $RSAKEY_PATH ]; then
   JAVA_CMD=$JAVA_CMD" -Drsakey.path=$RSAKEY_PATH"

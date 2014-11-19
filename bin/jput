@@ -4,8 +4,10 @@ if [ $J2DEPLOY_HOME ]; then
   source $J2DEPLOY_HOME/j2deploy.conf
 else
   echo "please set J2DEPLOY_HOME "
-  exit 1
+ # exit 1
 fi
+# TODO remove this
+source /opt/website/software/j2deploy/j2deploy.conf
 
 if [ $# -lt 2 ]
 then
