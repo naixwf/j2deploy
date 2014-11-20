@@ -7,7 +7,7 @@ else
  # exit 1
 fi
 # TODO remove this
-source /opt/website/software/j2deploy/j2deploy.conf
+source /home/admin/j2deploy/j2deploy.conf
 
 if [ $# -lt 2 ]
 then
