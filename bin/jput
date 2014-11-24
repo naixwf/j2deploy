@@ -46,3 +46,5 @@ $CMD
 # jput log
 TIME=`date "+%Y-%m-%d %H:%M:%S"`
 echo "[$TIME]: deploy [ $TARGET_FILE ] to this dir" >> $APP_HOME/info
+
+kill `jps -m |grep "app.id=${APP_ID}" | awk {'print $1'}`
