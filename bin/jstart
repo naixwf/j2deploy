@@ -79,6 +79,9 @@ fi
 # for jdbc config. just for TEST/PRODUCTION
 JAVA_CMD=$JAVA_CMD" -Djdbc.config=$APP_HOME/jdbc.properties"
 
+# for file store path
+JAVA_CMD=$JAVA_CMD" -DfileStore.home=/opt/data/webdata"
+
 # app.port
 if [ ! $HTTP_PORT ]; then
   echo "please set HTTP_PORT"
