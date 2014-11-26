@@ -93,6 +93,6 @@ JAVA_CMD=$JAVA_CMD" --httpPort=$HTTP_PORT"
 JAVA_CMD=$JAVA_CMD" -extractDirectory=$APP_WORK_HOME"
 
 # logger use slf4j
-JAVA_CMD=$JAVA_CMD" -loggerName=slf4j"
+JAVA_CMD=$JAVA_CMD" -loggerName=slf4j -resetExtract"
 
 exec $JAVA_CMD 2>&1 
