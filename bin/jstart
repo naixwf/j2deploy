@@ -93,6 +93,22 @@ JAVA_CMD=$JAVA_CMD" --httpPort=$HTTP_PORT"
 JAVA_CMD=$JAVA_CMD" -extractDirectory=$APP_WORK_HOME"
 
 # logger use slf4j
-JAVA_CMD=$JAVA_CMD" -loggerName=slf4j -resetExtract"
+JAVA_CMD=$JAVA_CMD" -loggerName=slf4j"
+
+# delete old file when restart
+JAVA_CMD=$JAVA_CMD" -resetExtract"
+
+# add jvm debug info
+JAVA_CMD=$JAVA_CMD" \
+-XX:+HeapDumpOnOutOfMemoryError \
+-XX:+PrintGC \
+-XX:+PrintGCApplicationConcurrentTime \
+-XX:+PrintGCApplicationStoppedTime \
+-XX:PrintHeapAtGC \
+"
+JAVA_CMD=$JAVA_CMD" -Xloggc:$APP_LOG_PATH/$APP_ID.gc.log.$(date +%Y%m%d%H%M)"
+JAVA_CMD=$JAVA_CMD" -XX:ErrorFile=$APP_LOG_PATH/$APP_ID.vmerr.log.$(date +%Y%m%d%H%M)"
+JAVA_CMD=$JAVA_CMD" -XX:HeapDumpPath=$APP_LOG_PATH/$APP_ID.heaperr.log.$(date +%Y%m%d%H%M)"
+
 
 exec $JAVA_CMD 2>&1 
