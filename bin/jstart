@@ -68,14 +68,6 @@ JAVA_CMD=$JAVA_CMD" -Denvironment=$EVIRONMENT"
 # log path
 JAVA_CMD=$JAVA_CMD" -DlogPath=$APP_LOG_PATH" 
 
-# for production,rsakey & path. only PRODUCTION need it to decrypt jdbc.password
-if [ $RSAKEY_PATH ]; then
-  JAVA_CMD=$JAVA_CMD" -Drsakey.path=$RSAKEY_PATH"
-fi
-if [ $RSAKEY_PASSWORD ]; then
-  JAVA_CMD=$JAVA_CMD" -Drsakey.password=$RSAKEY_PASSWORD"
-fi
-
 # for jdbc config. just for TEST/PRODUCTION
 JAVA_CMD=$JAVA_CMD" -Djdbc.config=$APP_HOME/jdbc.properties"
 
