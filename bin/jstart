@@ -99,7 +99,7 @@ JAVA_CMD=$JAVA_CMD" -resetExtract"
 # use specified tomcat conf: server.xml
 # TODO 提取系统变量 /home/admin/j2deploy/
 SERVER_XML="/home/admin/j2deploy/conf/tomcat/server.xml"
-JAVA_CMD=$JAVA_CMD" -serverXmlPath ${SERVER_XML}"
+#JAVA_CMD=$JAVA_CMD" -serverXmlPath ${SERVER_XML}"
 
 # add jvm debug info
 JAVA_CMD=$JAVA_CMD" \
