@@ -65,6 +65,12 @@ JAVA_CMD=$JAVA_CMD" $JAVA_HOME/bin/java -jar $APP_HOME/$APP_ID.jar -Dapp.id=$APP
 # environment
 JAVA_CMD=$JAVA_CMD" -Denvironment=$EVIRONMENT" 
 
+# optmize param
+JAVA_CMD=$JAVA_CMD" -server \
+-Xms1500m -Xmx1500m \
+-XX:+DisableExplicitGC \ 
+"
+
 # log path
 JAVA_CMD=$JAVA_CMD" -DlogPath=$APP_LOG_PATH" 
 
