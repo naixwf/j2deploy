@@ -53,7 +53,7 @@
    -->
   <Service name="Catalina">
 
-    <Connector port="${httpPort}" protocol="HTTP/1.1"
+    <Connector port="${httpPort}" protocol="org.apache.coyote.http11.Http11NioProtocol"
                URIEncoding="UTF-8" minSpareThreads="25" maxSpareThreads="75"
                enableLookups="false" disableUploadTimeout="true" connectionTimeout="20000"
                acceptCount="300"  maxThreads="300" maxProcessors="1000" minProcessors="5"
