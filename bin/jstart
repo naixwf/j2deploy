@@ -68,7 +68,7 @@ JAVA_CMD=$JAVA_CMD" -Denvironment=$EVIRONMENT"
 # optmize param
 JAVA_CMD=$JAVA_CMD" -server \
 -Xms1500m -Xmx1500m \
--XX:+DisableExplicitGC \ 
+-XX:+DisableExplicitGC  
 "
 
 # log path
