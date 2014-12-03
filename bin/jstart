@@ -85,7 +85,8 @@ if [ ! $HTTP_PORT ]; then
   echo "please set HTTP_PORT"
   exit 1
 fi
-JAVA_CMD=$JAVA_CMD" --httpPort=$HTTP_PORT"
+#JAVA_CMD=$JAVA_CMD" --httpPort=$HTTP_PORT"
+JAVA_CMD=$JAVA_CMD" -DhttpPort=$HTTP_PORT"
 
 # extract to path
 JAVA_CMD=$JAVA_CMD" -extractDirectory=$APP_WORK_HOME"
@@ -99,7 +100,7 @@ JAVA_CMD=$JAVA_CMD" -resetExtract"
 # use specified tomcat conf: server.xml
 # TODO 提取系统变量 /home/admin/j2deploy/
 SERVER_XML="/home/admin/j2deploy/conf/tomcat/server.xml"
-#JAVA_CMD=$JAVA_CMD" -serverXmlPath ${SERVER_XML}"
+JAVA_CMD=$JAVA_CMD" -serverXmlPath ${SERVER_XML}"
 
 # add jvm debug info
 JAVA_CMD=$JAVA_CMD" \

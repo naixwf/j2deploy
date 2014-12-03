@@ -53,21 +53,7 @@
    -->
   <Service name="Catalina">
 
-    <!--The connectors can use a shared executor, you can define one or more named thread pools-->
-    <!--
-    <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
-        maxThreads="150" minSpareThreads="4"/>
-    -->
-
-
-    <!-- A "Connector" represents an endpoint by which requests are received
-         and responses are returned. Documentation at :
-         Java HTTP Connector: /docs/config/http.html (blocking & non-blocking)
-         Java AJP  Connector: /docs/config/ajp.html
-         APR (HTTP/AJP) Connector: /docs/apr.html
-         Define a non-SSL HTTP/1.1 Connector on port 8080
-    -->
-    <Connector port="8080" protocol="HTTP/1.1"
+    <Connector port="${httpPort}" protocol="HTTP/1.1"
                URIEncoding="UTF-8" minSpareThreads="25" maxSpareThreads="75"
                enableLookups="false" disableUploadTimeout="true" connectionTimeout="20000"
                acceptCount="300"  maxThreads="300" maxProcessors="1000" minProcessors="5"
@@ -75,73 +61,14 @@
                compression="on" compressionMinSize="2048"
                compressableMimeType="text/html,text/xml,text/javascript,text/css,text/plain"
                redirectPort="8443" />
-    <!--
-    <Connector executor="tomcatThreadPool"
-               port="8080" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443" />
-    -->
-    <!-- Define a SSL HTTP/1.1 Connector on port 8443
-         This connector uses the BIO implementation that requires the JSSE
-         style configuration. When using the APR/native implementation, the
-         OpenSSL style configuration is required as described in the APR/native
-         documentation -->
-    <!--
-    <Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol"
-               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS" />
-    -->
 
-    <!-- Define an AJP 1.3 Connector on port 8009 -->
-    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
-
-
-    <!-- An Engine represents the entry point (within Catalina) that processes
-         every request.  The Engine implementation for Tomcat stand alone
-         analyzes the HTTP headers included with the request, and passes them
-         on to the appropriate Host (virtual host).
-         Documentation at /docs/config/engine.html -->
-
-    <!-- You should set jvmRoute to support load-balancing via AJP ie :
-    <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
-    -->
-    <Engine name="Catalina" defaultHost="localhost">
-
-      <!--For clustering, please take a look at documentation at:
-          /docs/cluster-howto.html  (simple how to)
-          /docs/config/cluster.html (reference documentation) -->
-      <!--
-      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
-      -->
-
-      <!-- Use the LockOutRealm to prevent attempts to guess user passwords
-           via a brute-force attack -->
-      <Realm className="org.apache.catalina.realm.LockOutRealm">
-        <!-- This Realm uses the UserDatabase configured in the global JNDI
-             resources under the key "UserDatabase".  Any edits
-             that are performed against this UserDatabase are immediately
-             available for use by the Realm.  -->
-        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
-               resourceName="UserDatabase"/>
-      </Realm>
-
-      <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true">
-
-        <!-- SingleSignOn valve, share authentication between web applications
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
-        -->
-
-        <!-- Access log processes all example.
-             Documentation at: /docs/config/valve.html
-             Note: The pattern used is equivalent to using pattern="common" -->
+     <Engine name="Catalina" defaultHost="localhost">
+         <Host name="localhost"  appBase="webapps"
+                  unpackWARs="true" autoDeploy="true">
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log." suffix=".txt"
-               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
-
-      </Host>
-    </Engine>
+                       prefix="access_log." suffix=".txt"
+                                      pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+         </Host>
+     </Engine>
   </Service>
 </Server>
