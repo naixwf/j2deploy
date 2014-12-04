@@ -1,0 +1,13 @@
+url=jdbc:mysql://dev:3307/S51?useUnicode=true&characterEncoding=utf-8&noAccessToProcedureBodies=true
+
+username=dev
+
+#password=dev
+
+password=MRduqEFNbGDctLTnyYqvXeawQRnpjaVn8ApZapbUw3Qd8BKD40O+JhyjZlLzpsUmd020iLXyEb4UzfSiqcNnaQ==
+config.decrypt=true
+
+initialSize=5
+maxActive=10
+minIdle=1
+
