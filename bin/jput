@@ -1,13 +1,5 @@
 #!/bin/bash
 # put a jar to the place
-if [ $J2DEPLOY_HOME ]; then
-  source $J2DEPLOY_HOME/j2deploy.conf
-else
-  echo "please set J2DEPLOY_HOME "
- # exit 1
-fi
-# TODO remove this
-source /home/admin/j2deploy/j2deploy.conf
 
 if [ $# -lt 2 ]
 then
@@ -16,6 +8,16 @@ then
 fi
 
 set -e
+# read main config
+OLDDIR=`pwd`
+BIN_DIR=`dirname $0`
+cd "${BIN_DIR}/.." && DEFAULT_J2DEPLOY_HOME=`pwd` && cd "${OLDDIR}"
+
+J2DEPLOY_HOME="${J2DEPLOY_HOME:=${DEFAULT_J2DEPLOY_HOME}}"
+echo "J2DEPLOY_HOME is set to ${J2DEPLOY_HOME}"
+MAIN_CONFIG=${J2DEPLOY_HOME}/j2deploy.conf
+source $MAIN_CONFIG
+# end of read main config
 
 APP_ID=$1
 SRC_FILE=$2
