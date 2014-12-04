@@ -17,6 +17,9 @@ J2DEPLOY_HOME="${J2DEPLOY_HOME:=${DEFAULT_J2DEPLOY_HOME}}"
 echo "J2DEPLOY_HOME is set to ${J2DEPLOY_HOME}"
 MAIN_CONFIG=${J2DEPLOY_HOME}/j2deploy.conf
 source $MAIN_CONFIG
+
+LIB_DIR=${J2DEPLOY_HOME}/lib
+CONFIG_DIR=${J2DEPLOY_HOME}/conf
 # end of read main config 
 
 APP_ID=$1
@@ -63,8 +66,23 @@ if [ "$UID" = "0" ]; then
 fi
 
 
+# app.port
+if [ ! $HTTP_PORT ]; then
+  echo "please set HTTP_PORT"
+  exit 1
+fi
+
+#STOP_PORT=`expr $HTTP_PORT '+' 3000`
+JOLOKIA_PORT=`expr $HTTP_PORT '+' 15000`
+# add jolokia
+JOLOKIA_JAR="${LIB_DIR}/jolokia-jvm-1.2.3-agent.jar"
+
+
+# jolokia
+JAVA_CMD=$JAVA_CMD" $JAVA_HOME/bin/java -javaagent:${JOLOKIA_JAR}=port=${JOLOKIA_PORT}"
+
 # the jar contains war
-JAVA_CMD=$JAVA_CMD" $JAVA_HOME/bin/java -jar $APP_HOME/$APP_ID.jar -Dapp.id=$APP_ID -Dfile.encoding=UTF-8"
+JAVA_CMD=$JAVA_CMD" -jar $APP_HOME/$APP_ID.jar -Dapp.id=$APP_ID -Dfile.encoding=UTF-8"
 # environment
 JAVA_CMD=$JAVA_CMD" -Denvironment=$EVIRONMENT" 
 
@@ -78,19 +96,15 @@ JAVA_CMD=$JAVA_CMD" -server \
 JAVA_CMD=$JAVA_CMD" -DlogPath=$APP_LOG_PATH" 
 
 # for jdbc config. just for TEST/PRODUCTION
-JAVA_CMD=$JAVA_CMD" -Djdbc.config=$APP_HOME/jdbc.properties"
+JAVA_CMD=$JAVA_CMD" -Djdbc.config=${CONFIG_DIR}/jdbc/jdbc.properties.${EVIRONMENT}.${APP_ID}"
 
 # for file store path
 JAVA_CMD=$JAVA_CMD" -DfileStore.home=/opt/data/webdata"
 
-# app.port
-if [ ! $HTTP_PORT ]; then
-  echo "please set HTTP_PORT"
-  exit 1
-fi
-#JAVA_CMD=$JAVA_CMD" --httpPort=$HTTP_PORT"
 JAVA_CMD=$JAVA_CMD" -DhttpPort=$HTTP_PORT"
 
+
+# tomcat standalone config must be at the end of the JAVA_CMD
 # extract to path
 JAVA_CMD=$JAVA_CMD" -extractDirectory=$APP_WORK_HOME"
 
@@ -105,6 +119,7 @@ JAVA_CMD=$JAVA_CMD" -resetExtract"
 SERVER_XML="/home/admin/j2deploy/conf/tomcat/server.xml"
 JAVA_CMD=$JAVA_CMD" -serverXmlPath ${SERVER_XML}"
 
+
 # add jvm debug info
 JAVA_CMD=$JAVA_CMD" \
 -XX:+HeapDumpOnOutOfMemoryError \
@@ -118,4 +133,5 @@ JAVA_CMD=$JAVA_CMD" -XX:ErrorFile=$APP_LOG_PATH/$APP_ID.vmerr.log.$(date +%Y%m%d
 JAVA_CMD=$JAVA_CMD" -XX:HeapDumpPath=$APP_LOG_PATH/$APP_ID.heaperr.log.$(date +%Y%m%d%H%M)"
 
 
+echo $JAVA_CMD
 exec $JAVA_CMD 2>&1 
