@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{HH:mm:ss.SSS} %-5level \(%F:%L\) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/${app.id}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/${app.id}.log.%d{yyyy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %-5level \(%F:%L\) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- project default level -->
+    <logger name="com.dimeng" level="DEBUG"/>
+    <logger name="com.hairongyi" level="DEBUG"/>
+
+    <!-- druid -->
+    <logger name="druid.sql.DataSource" level="WARN"/>
+    <logger name="druid.sql.Connection" level="WARN"/>
+    <logger name="druid.sql.ResultSet" level="WARN"/>
+    <logger name="druid.sql.Statement" level="WARN"/>
+
+    <root level="WARN">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rollingFile"/>
+    </root>
+</configuration>
