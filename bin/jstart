@@ -99,7 +99,7 @@ JAVA_CMD=$JAVA_CMD" -DlogPath=$APP_LOG_PATH"
 JAVA_CMD=$JAVA_CMD" -Djdbc.config=${CONFIG_DIR}/jdbc/jdbc.properties.${EVIRONMENT}.${APP_ID}"
 
 # for logback config file
-#JAVA_CMD=$JAVA_CMD" -Dlogback.configurationFile=${CONFIG_DIR}/logback/logback.xml.${EVIRONMENT}"
+JAVA_CMD=$JAVA_CMD" -Dlogback.configurationFile=${CONFIG_DIR}/logback/${EVIRONMENT}.logback.xml"
 
 # for file store path
 JAVA_CMD=$JAVA_CMD" -DfileStore.home=/opt/data/webdata"
