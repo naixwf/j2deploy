@@ -35,7 +35,8 @@ APP_WORK_HOME=$APP_HOME/work
 
 # assemble target file path
 TIMESTAMP=`date +%Y%m%d%H%M`
-TARGET_FILE="${APP_WAR_HOME}/${APP_ID}-${TIMESTAMP}.jar"
+WAR_NAME=`basename $SRC_FILE`
+TARGET_FILE="${APP_WAR_HOME}/${WAR_NAME}"
 
 CMD="cp $SRC_FILE $TARGET_FILE"
 echo "executing [ $CMD ]"
