@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%date{HH:mm:ss.SSS} %-5level %thread \(%F:%L\) - %msg%n</pattern>
-        </encoder>
-    </appender>
-
     <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${logPath}/${app.id}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -28,7 +22,6 @@
     <logger name="druid.sql.Statement" level="WARN"/>
 
     <root level="WARN">
-        <appender-ref ref="console"/>
         <appender-ref ref="rollingFile"/>
     </root>
 </configuration>
