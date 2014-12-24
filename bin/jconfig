@@ -1,0 +1,35 @@
+#!/bin/bash
+# 操作系统配置
+if [ $# -lt 2 ]
+then
+  echo "usage: $0 <command> <config_key> " 
+  exit 1
+fi
+
+set -e
+
+CMD=${1}
+CONFIG_KEY=${2}
+
+# front
+USER_PORT=23010
+CONSOLE_PORT=23011
+PAY_PORT=23012
+FRONT_PORT=23013
+
+
+USER_URL="http://127.0.0.1:${USER_PORT}/jolokia/exec/com.hairongyi:type=Configure/${CMD}/${CONFIG_KEY}"
+CONSOLE_URL="http://127.0.0.1:${CONSOLE_PORT}/jolokia/exec/com.hairongyi:type=Configure/${CMD}/${CONFIG_KEY}"
+PAY_URL="http://127.0.0.1:${PAY_PORT}/jolokia/exec/com.hairongyi:type=Configure/${CMD}/${CONFIG_KEY}"
+FRONT_URL="http://127.0.0.1:${FRONT_PORT}/jolokia/exec/com.hairongyi:type=Configure/${CMD}/${CONFIG_KEY}"
+
+
+echo "USER:"`curl $USER_URL 2>/dev/null`
+echo ""
+echo "CONSOLE:"`curl $CONSOLE_URL 2>/dev/null`
+echo ""
+echo "PAY:"`curl $PAY_URL 2>/dev/null`
+echo ""
+echo "FRONT:"`curl $FRONT_URL 2>/dev/null`
+
+
