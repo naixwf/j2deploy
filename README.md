@@ -1,5 +1,6 @@
 This reporitory is for deploy j2ee app to test/production environment 
-涉及技术关键字：
+
+涉及技术关键字：   
 linux , tomcat , daemontools , bash , jolokia
 
 * bin 
